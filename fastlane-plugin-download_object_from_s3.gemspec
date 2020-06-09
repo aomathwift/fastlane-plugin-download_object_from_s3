@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = 'a.okw1011@gmail.com'
 
   spec.summary       = 'Download objects from AWS S3'
-  # spec.homepage      = "https://github.com/<GITHUB_USERNAME>/fastlane-plugin-download_object_from_s3"
+  spec.homepage      = "https://github.com/aomathwift/fastlane-plugin-download_object_from_s3"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)
