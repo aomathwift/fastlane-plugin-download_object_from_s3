@@ -7,7 +7,7 @@ module Fastlane
   module Actions
     class DownloadObjectFromS3Action < Action
       def self.run(params)
-        UI.message("The download_object_from_s3 plugin is working!")
+        UI.message("Downloading from AWS S3...")
         credentials = Aws::Credentials.new(
           access_key_id = params[:access_key_id],
           secret_access_key = params[:secret_access_key]
@@ -30,9 +30,9 @@ module Fastlane
           UI.user_error!("Object is not found. Please check to input correct object key.")
         end
 
-        if params[:file_path]
-          file_path = File.dirname(params[:file_path])
-          file_name = File.basename(params[:file_path])
+        if params[:output_path]
+          file_path = "./#{File.dirname(params[:output_path])}"
+          file_name = File.basename(params[:output_path])
         else
           file_path = "."
           file_name = params[:object_key].split("/").last
@@ -47,6 +47,8 @@ module Fastlane
         File.open(file_name, "w+") do |file|
           file.puts(object.get.body.read)
         end
+
+        UI.success("The file is successfully downloaded from AWS S3 📥")
       end
 
       def self.description
@@ -88,7 +90,7 @@ module Fastlane
                                description: "AWS S3 Object key",
                                   optional: false,
                                       type: String),
-          FastlaneCore::ConfigItem.new(key: :file_path,
+          FastlaneCore::ConfigItem.new(key: :output_path,
                                   env_name: "OUTPUT_PATH",
                                description: "S3 Object Output Path",
                                   optional: true,
