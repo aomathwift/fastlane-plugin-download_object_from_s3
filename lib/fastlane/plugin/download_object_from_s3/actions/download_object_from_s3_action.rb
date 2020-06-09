@@ -8,10 +8,7 @@ module Fastlane
     class DownloadObjectFromS3Action < Action
       def self.run(params)
         UI.message("Downloading from AWS S3...")
-        credentials = Aws::Credentials.new(
-          access_key_id = params[:access_key_id],
-          secret_access_key = params[:secret_access_key]
-        )
+        credentials = Aws::Credentials.new(params[:access_key_id], params[:secret_access_key])
 
         s3_resource = Aws::S3::Resource.new(
           credentials: credentials,
@@ -20,7 +17,7 @@ module Fastlane
 
         begin
           bucket = s3_resource.bucket(params[:bucket])
-        rescue => exception
+        rescue
           UI.user_error!("Bucket is not found. Please check to input correct bucket name.")
         end
 
@@ -37,7 +34,6 @@ module Fastlane
           file_path = "."
           file_name = params[:object_key].split("/").last
         end
-        
 
         unless File.exist?(file_path)
           FileUtils.mkdir_p(file_path)
@@ -94,8 +90,7 @@ module Fastlane
                                   env_name: "OUTPUT_PATH",
                                description: "S3 Object Output Path",
                                   optional: true,
-                                      type: String),
-          
+                                      type: String)
         ]
       end
 
