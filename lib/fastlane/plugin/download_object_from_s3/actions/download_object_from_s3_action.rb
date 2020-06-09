@@ -18,9 +18,9 @@ module Fastlane
           region: params[:region]
         )
 
-        bucket = s3_resource.bucket(params[:bucket])
-
-        if bucket.nil?
+        begin
+          bucket = s3_resource.bucket(params[:bucket])
+        rescue => exception
           UI.user_error!("Bucket is not found. Please check to input correct bucket name.")
         end
 
@@ -60,7 +60,7 @@ module Fastlane
       end
 
       def self.details
-        "With download_object_from_s3 action, you can download various objects such as images, IPAs, APKs from AWS S3 This is useful, for example, when you want to share artifacts between separated jobs."
+        "With download_object_from_s3 action, you can download various objects such as images, IPAs, APKs from AWS S3. This is useful, for example, when you want to share artifacts between separated CI jobs."
       end
 
       def self.available_options
